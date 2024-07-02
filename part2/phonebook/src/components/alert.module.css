@@ -1,0 +1,19 @@
+.alert {
+  padding: 0.25rem;
+  font-size: 1.2rem;
+  border-radius: 0.15rem;
+  margin-bottom: 0.5rem;
+  background: var(--alert-bg);
+  border: 2px solid var(--alert-color);
+  color: var(--alert-color);
+}
+
+.success {
+  --alert-bg: lightgreen;
+  --alert-color: green;
+}
+
+.error {
+  --alert-bg: lightpink;
+  --alert-color: red;
+}

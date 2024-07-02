@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { PersonGateway } from "../gateways/person";
+import { Alert } from "./alert";
 
 export const NewPersonForm = ({
   person,
@@ -6,6 +8,7 @@ export const NewPersonForm = ({
   persons,
   setPersons,
 }) => {
+  const [message, setMessage] = useState({ message: "" });
   const onSubmit = (e) => {
     e.preventDefault();
     const personGateway = new PersonGateway();
@@ -14,13 +17,29 @@ export const NewPersonForm = ({
       confirm(
         `${person.name} is already in the phonebook. Shall we update their info?`
       )
-        ? personGateway.update(existingPerson.id, person).then((data) => {
-            setPersons(persons.map((p) => (p.id === data.id ? data : p)));
-            onPersonChange({ name: "", number: "" });
-          })
+        ? personGateway
+            .update(existingPerson.id, person)
+            .then((data) => {
+              setMessage({
+                message: `Updated contact: ${person.name}`,
+                variant: "success",
+              });
+              setPersons(persons.map((p) => (p.id === data.id ? data : p)));
+              onPersonChange({ name: "", number: "" });
+            })
+            .catch(() => {
+              setMessage({
+                message: `${person.name} does not exist on the server`,
+                variant: "error",
+              });
+            })
         : onPersonChange({ name: "", number: "" });
     } else {
       personGateway.create(person).then((data) => {
+        setMessage({
+          message: `Created contact: ${person.name}`,
+          variant: "success",
+        });
         setPersons([...persons, data]);
         onPersonChange({ name: "", number: "" });
       });
@@ -29,6 +48,7 @@ export const NewPersonForm = ({
 
   return (
     <form onSubmit={onSubmit}>
+      <Alert {...message} />
       <div>
         name:{" "}
         <input
