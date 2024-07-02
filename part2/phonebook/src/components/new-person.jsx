@@ -9,8 +9,8 @@ export const NewPersonForm = ({
     if (persons.some((p) => p.name === person.name)) {
       return alert(`${person.name} is already in the phonebook.`);
     }
-    setPersons([...persons, person]);
-    onPersonChange({ name: "", phone: "" });
+    setPersons([...persons, { ...person, id: persons.length + 1 }]);
+    onPersonChange({ name: "", number: "" });
   };
 
   return (
@@ -25,8 +25,10 @@ export const NewPersonForm = ({
       <div>
         number:{" "}
         <input
-          value={person.phone}
-          onChange={(e) => onPersonChange({ ...person, phone: e.target.value })}
+          value={person.number}
+          onChange={(e) =>
+            onPersonChange({ ...person, number: e.target.value })
+          }
         />
       </div>
       <div>

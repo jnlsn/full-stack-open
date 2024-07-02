@@ -3,12 +3,11 @@ import { useState } from "react";
 import { Filter } from "./components/filter";
 import { Persons } from "./components/persons";
 import { NewPersonForm } from "./components/new-person";
+import { useEffect } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", phone: "111-111-1111" },
-  ]);
-  const [newPerson, setNewPerson] = useState({ name: "", phone: "" });
+  const [persons, setPersons] = useState([]);
+  const [newPerson, setNewPerson] = useState({ id: 0, name: "", number: "" });
   const [filterBy, setFilterBy] = useState("");
 
   const filteredPersons = useMemo(() => {
@@ -17,6 +16,14 @@ const App = () => {
       person.name.toLowerCase().includes(filterBy.toLowerCase())
     );
   }, [filterBy, persons]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/persons", { method: "GET" })
+      .then((res) => res.json())
+      .then((data) => {
+        setPersons(data);
+      });
+  }, []);
 
   return (
     <div>
