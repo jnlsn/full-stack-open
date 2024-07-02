@@ -1,3 +1,5 @@
+import { PersonGateway } from "../gateways/person";
+
 export const NewPersonForm = ({
   person,
   onPersonChange,
@@ -6,11 +8,23 @@ export const NewPersonForm = ({
 }) => {
   const onSubmit = (e) => {
     e.preventDefault();
-    if (persons.some((p) => p.name === person.name)) {
-      return alert(`${person.name} is already in the phonebook.`);
+    const personGateway = new PersonGateway();
+    const existingPerson = persons.find((p) => p.name === person.name);
+    if (existingPerson) {
+      confirm(
+        `${person.name} is already in the phonebook. Shall we update their info?`
+      )
+        ? personGateway.update(existingPerson.id, person).then((data) => {
+            setPersons(persons.map((p) => (p.id === data.id ? data : p)));
+            onPersonChange({ name: "", number: "" });
+          })
+        : onPersonChange({ name: "", number: "" });
+    } else {
+      personGateway.create(person).then((data) => {
+        setPersons([...persons, data]);
+        onPersonChange({ name: "", number: "" });
+      });
     }
-    setPersons([...persons, { ...person, id: persons.length + 1 }]);
-    onPersonChange({ name: "", number: "" });
   };
 
   return (

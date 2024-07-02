@@ -1,28 +1,17 @@
-import { useMemo } from "react";
 import { useState } from "react";
 import { Filter } from "./components/filter";
 import { Persons } from "./components/persons";
 import { NewPersonForm } from "./components/new-person";
 import { useEffect } from "react";
+import { PersonGateway } from "./gateways/person";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newPerson, setNewPerson] = useState({ id: 0, name: "", number: "" });
+  const [newPerson, setNewPerson] = useState({ name: "", number: "" });
   const [filterBy, setFilterBy] = useState("");
 
-  const filteredPersons = useMemo(() => {
-    if (!filterBy) return persons;
-    return persons.filter((person) =>
-      person.name.toLowerCase().includes(filterBy.toLowerCase())
-    );
-  }, [filterBy, persons]);
-
   useEffect(() => {
-    fetch("http://localhost:3001/persons", { method: "GET" })
-      .then((res) => res.json())
-      .then((data) => {
-        setPersons(data);
-      });
+    new PersonGateway().getAll().then((data) => setPersons(data));
   }, []);
 
   return (
@@ -37,7 +26,7 @@ const App = () => {
         setPersons={setPersons}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={persons} setPersons={setPersons} filterBy={filterBy} />
     </div>
   );
 };
