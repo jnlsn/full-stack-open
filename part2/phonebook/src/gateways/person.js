@@ -1,5 +1,5 @@
 export class PersonGateway {
-  #endpoint = "http://localhost:3001/persons";
+  #endpoint = "/api/persons";
 
   getAll() {
     return fetch(this.#endpoint).then((res) => res.json());
