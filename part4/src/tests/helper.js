@@ -1,4 +1,4 @@
-const Blogs = require("../models/blogs");
+const Blog = require("../models/blog");
 
 const initialBlogs = [
   {
@@ -12,7 +12,7 @@ const initialBlogs = [
 ];
 
 const nonExistingId = async () => {
-  const blog = new Blogs({ title: "willremovethissoon" });
+  const blog = new Blog({ title: "willremovethissoon" });
   await blog.save();
   await blog.deleteOne();
 

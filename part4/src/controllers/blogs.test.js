@@ -3,16 +3,16 @@ const assert = require("node:assert");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
-const Blogs = require("../models/blogs");
+const Blog = require("../models/blog");
 const helper = require("../tests/helper");
 
 const api = supertest(app);
 
 describe("blogs controller", () => {
   beforeEach(async () => {
-    await Blogs.deleteMany({});
+    await Blog.deleteMany({});
     for (let initialBlog of helper.initialBlogs) {
-      let newBlog = new Blogs(initialBlog);
+      let newBlog = new Blog(initialBlog);
       await newBlog.save();
     }
   });
