@@ -23,7 +23,7 @@ export const BlogForm = ({ user, onSuccess }) => {
           };
           const post = await blogService.create(data, user.token);
           setMessage(`${post.title} added`);
-          onSuccess && onSuccess(data);
+          onSuccess && onSuccess({ ...data, ...post });
           form.reset();
         } catch (e) {
           console.log(e);

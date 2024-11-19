@@ -23,7 +23,7 @@ export const Blog = ({ post, user, onBlogChange }) => {
 
   return (
     <div style={{ padding: ".5rem", border: "1px solid black" }}>
-      {post.title}{" "}
+      <span>{post.title}</span>{" "}
       <button aria-controls={id} onClick={() => setVisible(!visible)}>
         {visible ? "hide" : "show"}
       </button>

@@ -40,7 +40,7 @@ export const LoginForm = ({ setUser }) => {
         </div>
         <div>
           <label for="password">Password</label>
-          <input type="password" name="password" />
+          <input type="password" name="password" id="password" />
         </div>
         {Boolean(message) && (
           <p role="alert" aria-live="assertive">

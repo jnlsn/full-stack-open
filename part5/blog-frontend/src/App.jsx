@@ -41,7 +41,10 @@ const App = () => {
             <button onClick={logout}>logout</button>
           </p>
           <Togglable buttonLabel="New Post">
-            <BlogForm user={user} />
+            <BlogForm
+              user={user}
+              onSuccess={(blog) => setBlogs((blogs) => [blog, ...blogs])}
+            />
           </Togglable>
           <h2>blogs</h2>
           {blogs.map((blog) => (
