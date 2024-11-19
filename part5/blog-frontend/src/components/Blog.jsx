@@ -35,7 +35,7 @@ export const Blog = ({ post, user, onBlogChange }) => {
           </li>
           {post.author && <li>{post.author}</li>}
         </ul>
-        {user.username === post.user.username && (
+        {user.username === post?.user?.username && (
           <button onClick={handleRemove}>remove</button>
         )}
       </div>

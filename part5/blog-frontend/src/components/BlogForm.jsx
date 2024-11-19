@@ -2,7 +2,7 @@ import { useState } from "react";
 import blogService from "../services/blogs";
 import css from "./BlogForm.module.css";
 
-export const BlogForm = ({ user }) => {
+export const BlogForm = ({ user, onSuccess }) => {
   const [message, setMessage] = useState("");
 
   return (
@@ -10,21 +10,20 @@ export const BlogForm = ({ user }) => {
       onSubmit={async (e) => {
         e.preventDefault();
         const form = e.currentTarget;
-        const data = new FormData(form);
-        if (!data.get("title") || !data.get("url")) {
+        const formData = new FormData(form);
+        if (!formData.get("title") || !formData.get("url")) {
           setMessage("Enter a title and URL");
           return;
         }
         try {
-          const post = await blogService.create(
-            {
-              title: data.get("title"),
-              author: data.get("author"),
-              url: data.get("url"),
-            },
-            user.token
-          );
+          const data = {
+            title: formData.get("title"),
+            author: formData.get("author"),
+            url: formData.get("url"),
+          };
+          const post = await blogService.create(data, user.token);
           setMessage(`${post.title} added`);
+          onSuccess && onSuccess(data);
           form.reset();
         } catch (e) {
           console.log(e);
