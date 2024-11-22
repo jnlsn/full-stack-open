@@ -9,8 +9,10 @@ export const AnecdoteForm = () => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         if (!formData.get("content")) return;
-        dispatch(createAnecdote(formData.get("content")));
-        e.currentTarget.reset();
+        const form = e.currentTarget;
+        dispatch(createAnecdote(formData.get("content"))).then(() => {
+          form.reset();
+        });
       }}
     >
       <div>
