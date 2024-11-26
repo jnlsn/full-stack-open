@@ -1,10 +1,9 @@
-import { useState } from "react";
-import blogService from "../services/blogs";
 import css from "./BlogForm.module.css";
 import { useDispatch } from "react-redux";
 import { setNotification } from "../reducers/notificationsReducer";
+import { createBlog } from "../reducers/blogsReducer";
 
-export const BlogForm = ({ user, onSuccess }) => {
+export const BlogForm = ({ user }) => {
   const dispatch = useDispatch();
   return (
     <form
@@ -22,10 +21,10 @@ export const BlogForm = ({ user, onSuccess }) => {
             author: formData.get("author"),
             url: formData.get("url"),
           };
-          const post = await blogService.create(data, user.token);
-          dispatch(setNotification(`${post.title} added`));
-          onSuccess && onSuccess({ ...data, ...post });
-          form.reset();
+          dispatch(createBlog(data, user.token)).then(() => {
+            dispatch(setNotification(`${data.title} added`));
+            form.reset();
+          });
         } catch (e) {
           console.log(e);
           dispatch(setNotification("Could not add post"));
@@ -35,15 +34,15 @@ export const BlogForm = ({ user, onSuccess }) => {
       <fieldset className={css.fields}>
         <legend>Create a new blog post</legend>
         <div>
-          <label for="title">Title</label>
+          <label htmlFor="title">Title</label>
           <input id="title" name="title" type="text" />
         </div>
         <div>
-          <label for="author">Author</label>
+          <label htmlFor="author">Author</label>
           <input id="author" name="author" type="text" />
         </div>
         <div>
-          <label for="url">URL</label>
+          <label htmlFor="url">URL</label>
           <input id="url" name="url" type="text" />
         </div>
       </fieldset>

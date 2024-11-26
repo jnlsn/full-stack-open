@@ -1,23 +1,20 @@
 import { useId, useState } from "react";
-import blogService from "../services/blogs";
+import { useDispatch } from "react-redux";
+import { removeBlog, updateBlog } from "../reducers/blogsReducer";
 
-export const Blog = ({ post, user, onBlogChange }) => {
+export const Blog = ({ post, user }) => {
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const id = useId();
 
   const handleLike = async () => {
-    const updatedBlog = await blogService.update(
-      { ...post, likes: post.likes + 1 },
-      user.token
-    );
-    onBlogChange(updatedBlog);
+    dispatch(updateBlog({ ...post, likes: (post.likes || 0) + 1 }));
   };
 
   const handleRemove = async () => {
     const doIt = await confirm(`Delete the post: ${post.title}`);
     if (doIt) {
-      await blogService.remove(post.id, user.token);
-      onBlogChange(post, true);
+      dispatch(removeBlog(post.id, user.token));
     }
   };
 

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { setNotification } from "../reducers/notificationsReducer";
 import { useDispatch } from "react-redux";
+import { loginUser } from "../reducers/userReducer";
 
 export const LoginForm = ({ setUser }) => {
   const dispatch = useDispatch();
@@ -9,29 +9,12 @@ export const LoginForm = ({ setUser }) => {
       onSubmit={(e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
-        fetch("/api/login", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
+        dispatch(
+          loginUser({
             username: data.get("username"),
             password: data.get("password"),
-          }),
-        })
-          .then((res) => {
-            if (res.status !== 200) {
-              throw new Error("unauthorized");
-            }
-            return res.json();
           })
-          .then((user) => {
-            window.localStorage.setItem("loggedAppUser", JSON.stringify(user));
-            setUser(user);
-          })
-          .catch(() => {
-            useDispatch(setNotification("could not sign in"));
-          });
+        );
       }}
     >
       <fieldset>
