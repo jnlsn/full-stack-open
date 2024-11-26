@@ -1,0 +1,44 @@
+.nav {
+  background: blue;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  color: white;
+  font-size: larger;
+  font-family: sans-serif;
+
+  & ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  & ul li:last-of-type {
+    margin-left: auto;
+  }
+
+  & a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  & a:hover {
+    text-decoration: none;
+  }
+
+  & button {
+    border: 1px solid white;
+    border-radius: 0.5rem;
+    font-size: normal;
+    appearance: none;
+    font-family: inherit;
+    background: none;
+    color: white;
+    padding: 0.5em;
+    line-height: 1;
+  }
+}

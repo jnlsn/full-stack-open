@@ -5,9 +5,20 @@ const User = require("../models/user");
 const userExtractor = require("../utils/middleware").userExtractor;
 
 router.get("/", async (request, response) => {
-  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
+  const blogs = await Blog.find({})
+    .populate("comments", { comment: 1 })
+    .populate("user", { username: 1, name: 1 });
 
   response.json(blogs);
+});
+
+router.get("/:id", async (req, res) => {
+  const blog = await Blog.findById(req.params.id).populate("user", {
+    username: 1,
+    name: 1,
+  });
+
+  res.json(blog);
 });
 
 router.post("/", userExtractor, async (request, response) => {
